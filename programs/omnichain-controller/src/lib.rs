@@ -11,7 +11,6 @@ pub use instructions::*;
 
 // Re-export specific types at crate level for backward compatibility
 pub use state::message_types::{MintRequest, BurnRequest, TransferRequest, TreeConfig, TreeStateProof, CnftMetadata};
-pub use state::message_types_v2::MetadataUpdate;
 
 declare_id!("GNkuaJZASsQSS1C5eU5x8mB63Lhty3MgpiK6tsg8dchf");
 
@@ -36,15 +35,6 @@ pub mod omnichain_controller {
             authorized_dao,
             initial_collection_uri,
         )
-    }
-
-    /// Receive and process LayerZero cross-chain messages (V2 format)
-    pub fn receive_layerzero_message_v2(
-        ctx: Context<ReceiveLayerZeroMessageV2>,
-        src_eid: u32,
-        message: Vec<u8>,
-    ) -> Result<()> {
-        instructions::handle_layerzero_message_v2(ctx, src_eid, message)
     }
 
     /// Receive and process LayerZero cross-chain messages

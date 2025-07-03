@@ -174,7 +174,7 @@ fn handle_update_collection_metadata(config: &mut ControllerConfig, new_uri: Str
 
 fn handle_batch_update_metadata(
     _ctx: Context<ReceiveLayerZeroMessage>,
-    updates: Vec<crate::MetadataUpdate>,
+    updates: Vec<crate::state::message_types::MetadataUpdate>,
 ) -> Result<()> {
     require!(updates.len() <= MAX_BATCH_SIZE, ErrorCode::BatchTooLarge);
 
@@ -215,7 +215,7 @@ fn handle_set_paused(config: &mut ControllerConfig, paused: bool) -> Result<()> 
 
 fn handle_mint_cnfts(
     ctx: Context<ReceiveLayerZeroMessage>,
-    mint_requests: Vec<crate::MintRequest>,
+    mint_requests: Vec<crate::state::message_types::MintRequest>,
 ) -> Result<()> {
     require!(
         mint_requests.len() <= MAX_MINT_BATCH_SIZE,
@@ -266,7 +266,7 @@ fn handle_mint_cnfts(
 
 fn handle_burn_cnfts(
     _ctx: Context<ReceiveLayerZeroMessage>,
-    burn_requests: Vec<crate::BurnRequest>,
+    burn_requests: Vec<crate::state::message_types::BurnRequest>,
 ) -> Result<()> {
     require!(
         burn_requests.len() <= MAX_BURN_BATCH_SIZE,
@@ -306,7 +306,7 @@ fn handle_burn_cnfts(
 
 fn handle_transfer_cnfts(
     _ctx: Context<ReceiveLayerZeroMessage>,
-    transfer_requests: Vec<crate::TransferRequest>,
+    transfer_requests: Vec<crate::state::message_types::TransferRequest>,
 ) -> Result<()> {
     require!(
         transfer_requests.len() <= MAX_TRANSFER_BATCH_SIZE,
@@ -351,7 +351,7 @@ fn handle_transfer_cnfts(
 
 fn handle_update_tree_config(
     _config: &mut ControllerConfig,
-    new_config: crate::TreeConfig,
+    new_config: crate::state::message_types::TreeConfig,
 ) -> Result<()> {
     // Validate tree configuration
     require!(
@@ -382,7 +382,7 @@ fn handle_update_tree_config(
 
 fn handle_verify_tree_state(
     _config: &mut ControllerConfig,
-    tree_state: crate::TreeStateProof,
+    tree_state: crate::state::message_types::TreeStateProof,
 ) -> Result<()> {
     // Validate proof length
     require!(
@@ -404,7 +404,7 @@ fn handle_verify_tree_state(
 
 // Helper validation functions
 
-fn validate_cnft_metadata(metadata: &crate::CnftMetadata) -> Result<()> {
+fn validate_cnft_metadata(metadata: &crate::state::message_types::CnftMetadata) -> Result<()> {
     require!(
         !metadata.name.is_empty() && metadata.name.len() <= MAX_NAME_LENGTH,
         ErrorCode::InvalidMetadata
@@ -463,7 +463,7 @@ fn validate_cnft_metadata(metadata: &crate::CnftMetadata) -> Result<()> {
     Ok(())
 }
 
-// Helper functions for validation (currently unused but kept for future use)
+// Helper functions for validation
 
 fn validate_fee_config(fee_config: &crate::state::message_types::FeeConfig) -> Result<()> {
     // Validate that fee recipient is not the default pubkey
@@ -483,57 +483,3 @@ fn validate_fee_config(fee_config: &crate::state::message_types::FeeConfig) -> R
 
     Ok(())
 }
-
-/*
-fn validate_creators(creators: &[crate::Creator]) -> Result<()> {
-    require!(
-        creators.len() <= MAX_CREATORS_COUNT,
-        ErrorCode::InvalidCreators
-    );
-
-    let mut total_share: u16 = 0;
-    for creator in creators {
-        require!(
-            creator.share <= MAX_CREATOR_SHARE,
-            ErrorCode::InvalidCreators
-        );
-        total_share += creator.share as u16;
-    }
-
-    require!(
-        total_share <= 100,
-        ErrorCode::InvalidCreators
-    );
-
-    Ok(())
-}
-
-fn validate_collection(collection: &crate::Collection) -> Result<()> {
-    // For now, just validate that the collection key is not the default pubkey
-    require!(
-        collection.key != Pubkey::default(),
-        ErrorCode::CollectionNotVerified
-    );
-
-    Ok(())
-}
-
-fn validate_fee_config(fee_config: &crate::FeeConfig) -> Result<()> {
-    // Validate that fee recipient is not the default pubkey
-    require!(
-        fee_config.fee_recipient != Pubkey::default(),
-        ErrorCode::InvalidFeeConfig
-    );
-
-    // Validate reasonable fee amounts (max 1 SOL per operation)
-    const MAX_FEE: u64 = 1_000_000_000; // 1 SOL in lamports
-    require!(
-        fee_config.mint_fee <= MAX_FEE &&
-        fee_config.transfer_fee <= MAX_FEE &&
-        fee_config.burn_fee <= MAX_FEE,
-        ErrorCode::InvalidFeeConfig
-    );
-
-    Ok(())
-}
-*/

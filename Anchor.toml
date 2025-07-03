@@ -6,7 +6,7 @@ resolution = true
 skip-lint = false
 
 [programs.localnet]
-omnichain_controller = "JAXaRpR52DW84sDdsdtFcWirgRuJTBdbHejUzBt3napZ"
+omnichain_controller = "GNkuaJZASsQSS1C5eU5x8mB63Lhty3MgpiK6tsg8dchf"
 
 [registry]
 url = "https://api.apr.dev"
