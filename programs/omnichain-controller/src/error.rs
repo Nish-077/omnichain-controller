@@ -89,4 +89,32 @@ pub enum ErrorCode {
 
     #[msg("Message from future: Message timestamp is too far in the future")]
     MessageFromFuture,
+
+    // V2 Enhanced Error Codes
+    #[msg("Invalid merkle tree: Merkle tree configuration or state invalid")]
+    InvalidMerkleTree,
+
+    #[msg("Invalid tree authority: Tree authority mismatch")]
+    InvalidTreeAuthority,
+
+    #[msg("Invalid collection mint: Collection mint address invalid")]
+    InvalidCollectionMint,
+
+    #[msg("Unauthorized source: Message from unauthorized source")]
+    UnauthorizedSource,
+
+    #[msg("System paused: All operations are temporarily disabled")]
+    SystemPaused,
+
+    #[msg("Unknown command: Received unknown command type")]
+    UnknownCommand,
+
+    #[msg("Invalid message: Message format or content invalid")]
+    InvalidMessage,
+
+    #[msg("Unsupported message version: Message version not supported")]
+    UnsupportedMessageVersion,
+
+    #[msg("Message expired: Message timestamp is too old")]
+    MessageExpired,
 }
