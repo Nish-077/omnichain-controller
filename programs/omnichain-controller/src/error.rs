@@ -48,6 +48,40 @@ pub enum ErrorCode {
     #[msg("Invalid creator configuration: Invalid share percentage or too many creators")]
     InvalidCreators,
 
+    // LayerZero OApp specific errors
+    #[msg("Invalid LayerZero message: Message format is invalid or corrupted")]
+    InvalidLzMessage,
+
+    #[msg("Unsupported version: Message version is not supported")]
+    UnsupportedVersion,
+
+    #[msg("Invalid command: Command type is not supported")]
+    InvalidCommand,
+
+    #[msg("Unsupported command: Command is not implemented")]
+    UnsupportedCommand,
+
+    #[msg("Untrusted peer: Message from untrusted peer")]
+    UntrustedPeer,
+
+    #[msg("Unauthorized sender: Sender is not authorized")]
+    UnauthorizedSender,
+
+    #[msg("Message too large: Message exceeds maximum size")]
+    MessageTooLarge,
+
+    #[msg("Endpoint CPI failed: Call to LayerZero endpoint failed")]
+    EndpointCpiFailed,
+
+    #[msg("Invalid peer address: Peer address is invalid")]
+    InvalidPeerAddress,
+
+    #[msg("Peer not found: Peer configuration not found")]
+    PeerNotFound,
+
+    #[msg("Store not initialized: OApp store is not initialized")]
+    StoreNotInitialized,
+
     #[msg("Invalid royalty: Royalty basis points cannot exceed 100%")]
     InvalidRoyalty,
 
@@ -117,4 +151,47 @@ pub enum ErrorCode {
 
     #[msg("Message expired: Message timestamp is too old")]
     MessageExpired,
+
+    // Phase 5: Massive cNFT Operations Error Codes
+    #[msg("Invalid tree depth: Tree depth must be between 20-24 for massive collections")]
+    InvalidTreeDepth,
+
+    #[msg("Invalid buffer size: Buffer size must be between 64-512 for massive collections")]
+    InvalidBufferSize,
+
+    #[msg("Invalid batch size: Batch size must be between 100-2000 for massive collections")]
+    InvalidBatchSize,
+
+    #[msg("Empty mint request: Mint request cannot be empty")]
+    EmptyMintRequest,
+
+    #[msg("Collection full: Maximum collection size reached")]
+    CollectionFull,
+
+    #[msg("Theme not found: Specified theme does not exist")]
+    ThemeNotFound,
+
+    #[msg("Invalid range: Start index must be less than end index")]
+    InvalidRange,
+
+    #[msg("Range out of bounds: Index range exceeds collection size")]
+    RangeOutOfBounds,
+
+    #[msg("Invalid tier promotion: Tier promotion criteria not met")]
+    InvalidTierPromotion,
+
+    #[msg("Invalid promotion criteria: Promotion criteria string is invalid")]
+    InvalidPromotionCriteria,
+
+    #[msg("Invalid tier: Tier value is not supported")]
+    InvalidTier,
+
+    #[msg("Too many themes: Maximum number of themes exceeded")]
+    TooManyThemes,
+
+    #[msg("Duplicate theme: Theme with this name already exists")]
+    DuplicateTheme,
+
+    #[msg("Too many attributes: Maximum number of attributes exceeded")]
+    TooManyAttributes,
 }
