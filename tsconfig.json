@@ -1,10 +1,58 @@
 {
   "compilerOptions": {
-    "types": ["mocha", "chai"],
-    "typeRoots": ["./node_modules/@types"],
-    "lib": ["es2015"],
+    "target": "ES2022",
+    "lib": ["ES2022"],
     "module": "commonjs",
-    "target": "es6",
-    "esModuleInterop": true
+    "declaration": true,
+    "outDir": "./dist",
+    "rootDir": "./",
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": false,
+    "types": ["mocha", "chai", "node"],
+    "typeRoots": ["./node_modules/@types", "types"],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@sdk/*": ["./sdk/*"],
+      "@scripts/*": ["./scripts/*"],
+      "@tests/*": ["./tests/*"],
+      "@contracts/*": ["./contracts/*"]
+    }
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.js",
+    "scripts/**/*",
+    "tests/**/*",
+    "sdk/**/*",
+    "contracts/**/*",
+    "hardhat.config.ts",
+    "layerzero.config.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "cache",
+    "artifacts",
+    "typechain-types",
+    "target",
+    "test-ledger",
+    "deployments"
+  ],
+  "ts-node": {
+    "require": ["tsconfig-paths/register"]
   }
 }
