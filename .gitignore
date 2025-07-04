@@ -19,9 +19,6 @@ typechain-types/
 
 # Environment files
 .env.*
-.env.local
-.env.deployment
-.env.example
 .env.*.local
 .env
 
