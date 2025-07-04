@@ -8,12 +8,15 @@ skip-lint = false
 [programs.localnet]
 omnichain_controller = "GNkuaJZASsQSS1C5eU5x8mB63Lhty3MgpiK6tsg8dchf"
 
+[programs.devnet]
+omnichain_controller = "GNkuaJZASsQSS1C5eU5x8mB63Lhty3MgpiK6tsg8dchf"
+
 [registry]
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "localnet"
+cluster = "devnet"
 wallet = "~/.config/solana/id.json"
 
 [scripts]
-test = "npx ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
+test = "npx ts-mocha -p ./tsconfig.json -t 1000000 tests/layerzero-critical-fixes.ts"

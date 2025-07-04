@@ -1,0 +1,12 @@
+{
+  "name": "Omnichain State-Compression Collection",
+  "description": "A massive collection of 1M+ state-compressed NFTs controlled by cross-chain DAO governance",
+  "image": "https://api.dicebear.com/7.x/shapes/svg?seed=collection&backgroundColor=0284c7",
+  "external_url": "https://omnichain-controller.demo",
+  "total_supply": 1000000,
+  "created": "2025-07-04T18:28:15.600Z",
+  "governance": {
+    "ethereum_dao": "0x742d35Cc6634C0532925a3b8D091d1a5643Ccc00",
+    "solana_program": "GNkuaJZASsQSS1C5eU5x8mB63Lhty3MgpiK6tsg8dchf"
+  }
+}

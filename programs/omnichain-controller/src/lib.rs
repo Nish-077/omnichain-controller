@@ -23,39 +23,20 @@ pub mod omnichain_controller {
     // LayerZero OApp Standard Instructions
     // ===============================
 
-    /// Initialize the LayerZero OApp Store (NEW)
+    /// Initialize the LayerZero OApp Store (NEW) - CRITICAL: Includes endpoint registration
     pub fn init_oapp_store(
         ctx: Context<InitOAppStore>,
-        collection_metadata: CollectionMetadata,
-        dao_config: DaoConfig,
+        params: InitOAppStoreParams,
     ) -> Result<()> {
-        instructions::init_oapp_store_handler(ctx, collection_metadata, dao_config)
+        instructions::init_oapp_store_handler(ctx, params)
     }
 
-    /// Initialize LayerZero receive types (NEW)
-    pub fn init_lz_receive_types(
-        ctx: Context<InitLzReceiveTypes>,
-        message_types: Vec<u8>,
-    ) -> Result<()> {
-        instructions::init_lz_receive_types_handler(ctx, message_types)
-    }
-
-    /// Initialize LayerZero compose types (NEW)
-    pub fn init_lz_compose_types(
-        ctx: Context<InitLzComposeTypes>,
-        compose_types: Vec<u8>,
-    ) -> Result<()> {
-        instructions::init_lz_compose_types_handler(ctx, compose_types)
-    }
-
-    /// Set peer configuration (NEW)
-    pub fn set_peer(
-        ctx: Context<SetPeer>,
-        src_eid: u32,
-        peer_address: [u8; 32],
-        trusted: bool,
-    ) -> Result<()> {
-        instructions::set_peer_handler(ctx, src_eid, peer_address, trusted)
+    /// LayerZero receive types instruction - CRITICAL for account discovery
+    pub fn lz_receive_types(
+        ctx: Context<LzReceiveTypesContext>,
+        params: LzReceiveParams,
+    ) -> Result<Vec<LzAccount>> {
+        instructions::lz_receive_types_handler(ctx, params)
     }
 
     /// LayerZero receive message handler (NEW)
@@ -125,25 +106,19 @@ pub mod omnichain_controller {
     }
 
     // ===============================
-    // Phase 5: Massive cNFT Operations
+    // Phase 5: Massive cNFT Operations (TEMPORARILY DISABLED FOR IDL COMPATIBILITY)
+    // TODO: Re-enable once ThemeConfig IDL issue is resolved
     // ===============================
 
-    /// Initialize a massive collection capable of handling 1M+ cNFTs
-    pub fn initialize_massive_collection(
-        ctx: Context<InitializeMassiveCollection>,
-        config: MassiveTreeConfig,
-        initial_theme: String,
-    ) -> Result<()> {
-        instructions::initialize_massive_collection_handler(ctx, config, initial_theme)
-    }
+    // Initialize a massive collection capable of handling 1M+ cNFTs
+    // TODO: Re-enable once ThemeConfig IDL issue is resolved
+    // pub fn initialize_massive_collection(
+    //     ctx: Context<InitializeMassiveCollection>,
+    //     config: MassiveTreeConfig,
+    //     initial_theme: String,
+    // ) -> Result<()> {
+    //     instructions::initialize_massive_collection_handler(ctx, config, initial_theme)
+    // }
 
-    /// Batch theme update for massive "wow factor" demonstration
-    pub fn batch_theme_update(
-        ctx: Context<BatchThemeUpdate>,
-        update_request: BatchThemeUpdateRequest,
-    ) -> Result<()> {
-        instructions::batch_theme_update_handler(ctx, update_request)
-    }
-
-    // Note: mass_mint and tier_promotion temporarily disabled while fixing lifetime issues
+    // Note: Additional mass operations can be added here as needed
 }

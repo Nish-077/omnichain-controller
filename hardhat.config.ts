@@ -52,7 +52,7 @@ const config: HardhatUserConfig = {
     // Localhost for testing
     localhost: {
       url: 'http://127.0.0.1:8545',
-      accounts,
+      accounts: accounts.length > 0 ? accounts : undefined, // Use default accounts if no private key
     },
   },
   

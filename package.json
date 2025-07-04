@@ -23,7 +23,11 @@
     "anchor:build": "anchor build",
     "anchor:deploy": "anchor deploy",
     "anchor:test": "anchor test",
-    "solana:test": "anchor test --skip-local-validator"
+    "solana:test": "anchor test --skip-local-validator",
+    "demo:localhost": "./scripts/demo-localhost.sh",
+    "demo:quick": "node scripts/demo/localhost-demo.js",
+    "deploy:localhost": "npx hardhat run scripts/deploy-localhost-simple.js --network localhost",
+    "test:localhost": "anchor test --skip-local-validator"
   },
   "dependencies": {
     "@coral-xyz/anchor": "^0.31.1",

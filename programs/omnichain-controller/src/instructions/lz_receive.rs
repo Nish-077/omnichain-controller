@@ -2,6 +2,17 @@ use anchor_lang::prelude::*;
 use crate::state::*;
 use crate::cpi::endpoint;
 
+/// LayerZero Clear Parameters
+#[derive(AnchorSerialize, AnchorDeserialize, Clone)]
+pub struct ClearParams {
+    pub receiver: Pubkey,
+    pub src_eid: u32,
+    pub sender: [u8; 32],
+    pub nonce: u64,
+    pub guid: [u8; 32],
+    pub message: Vec<u8>,
+}
+
 /// LayerZero receive message instruction
 #[derive(Accounts)]
 #[instruction(src_eid: u32)]
@@ -73,31 +84,50 @@ pub fn lz_receive_handler(
     ctx: Context<LzReceive>,
     src_eid: u32,
     sender: [u8; 32],
-    _nonce: u64,
+    nonce: u64,
     guid: [u8; 32],
     message: Vec<u8>,
 ) -> Result<()> {
     let store = &mut ctx.accounts.store;
     
-    // Validate message size
+    // 1. CRITICAL: Call endpoint clear FIRST for replay protection (LayerZero V2 requirement)
+    let seeds = &[OAppStore::SEEDS, &[store.bump]];
+    let clear_accounts = &ctx.remaining_accounts[..4]; // First 4 accounts are for clear
+    
+    // Call LayerZero endpoint clear CPI - MUST BE FIRST OPERATION
+    endpoint::clear(
+        &ctx.accounts.endpoint,
+        clear_accounts,
+        seeds,
+        &ClearParams {
+            receiver: store.key(),
+            src_eid,
+            sender,
+            nonce,
+            guid,
+            message: message.clone(),
+        },
+    )?;
+    
+    // 2. Validate message size
     if !msg_codec::MessageValidator::validate_message_size(&message) {
         return Err(crate::error::ErrorCode::MessageTooLarge.into());
     }
     
-    // Decode the message
+    // 3. Decode the message
     let decoded = msg_codec::MessageCodec::decode_message(&message)?;
     
-    // Validate message version and command
+    // 4. Validate message version and command
     if !msg_codec::MessageCodec::validate_command(decoded.command) {
         return Err(crate::error::ErrorCode::InvalidCommand.into());
     }
     
-    // Validate nonce
+    // 5. Validate nonce
     if !msg_codec::MessageValidator::validate_nonce(store.nonce, decoded.nonce) {
         return Err(crate::error::ErrorCode::InvalidNonce.into());
     }
     
-    // Validate timestamp
+    // 6. Validate timestamp
     if !msg_codec::MessageValidator::validate_timestamp(decoded.timestamp) {
         return Err(crate::error::ErrorCode::InvalidTimestamp.into());
     }
@@ -132,10 +162,6 @@ pub fn lz_receive_handler(
     // Update nonce and processed messages count
     store.nonce = decoded.nonce;
     store.processed_messages += 1;
-    
-    // Clear the message from the endpoint (required by LayerZero)
-    let accounts = vec![ctx.accounts.endpoint_accounts.clone()];
-    endpoint::clear(&ctx.accounts.endpoint, &accounts, &guid)?;
     
     msg!("Message processed - Command: {}, Nonce: {}, From EID: {}", 
          decoded.command, decoded.nonce, src_eid);

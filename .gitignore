@@ -18,9 +18,12 @@ artifacts/
 typechain-types/
 
 # Environment files
-.env
+.env.*
 .env.local
+.env.deployment
+.env.example
 .env.*.local
+.env
 
 # IDE
 .vscode/
